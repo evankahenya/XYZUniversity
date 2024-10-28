@@ -7,6 +7,5 @@
         public decimal Amount { get; set; }   // Amount of the payment
         public DateTime PaymentDate { get; set; } // Date of the payment
 
-        public Student Student { get; set; }  // Navigation property to the Student
     }
 }
