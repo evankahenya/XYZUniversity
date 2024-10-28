@@ -40,7 +40,9 @@ namespace XYZUniversity.API.Repositories
 
         public async Task<Student?> GetByIdAsync(Guid id)
         {
-            return await dbContext.Students.FindAsync(id);
+            return await dbContext.Students
+                           .Include(s => s.Payments) 
+                           .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Student?> UpdateAsync(Guid id, Student student)

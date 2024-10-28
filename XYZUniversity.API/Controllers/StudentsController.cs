@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace XYZUniversity.Controllers
         // GET ALL STUDENTS
         // GET: https://localhost:portnumber/api/students
         [HttpGet]
+        [Authorize (Roles = "Reader,Writer")]
         public async Task<IActionResult> GetAll()
         {
             // Get Data from Database - Domain Models
@@ -38,6 +40,7 @@ namespace XYZUniversity.Controllers
         // GET STUDENT BY ID
         [HttpGet]
         [Route("{id:Guid}")]
+        [Authorize (Roles = "Reader,Writer")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var studentDomain = await studentRepository.GetByIdAsync(id);
@@ -52,44 +55,57 @@ namespace XYZUniversity.Controllers
         // POST to create new student
         // POST: https://localhost:portnumber/api/students
         [HttpPost]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Create([FromBody] AddStudentRequestDto addStudentRequestDto)
         {
+            if (ModelState.IsValid)
+            {
+                // MAP DTO TO DOMAIN MODEL
+                var studentDomainModel = mapper.Map<Student>(addStudentRequestDto);
 
-            // MAP DTO TO DOMAIN MODEL
-            var studentDomainModel = mapper.Map<Student>(addStudentRequestDto);
+                // USE DOMAIN MODEL TO CREATE STUDENT
+                studentDomainModel = await studentRepository.CreateAsync(studentDomainModel);
 
-            // USE DOMAIN MODEL TO CREATE STUDENT
-            studentDomainModel = await studentRepository.CreateAsync(studentDomainModel);
+                // Map domain model back to DTO
+                var studentDto = mapper.Map<StudentDto>(studentDomainModel);
 
-            // Map domain model back to DTO
-            var studentDto = mapper.Map<StudentDto>(studentDomainModel);
-
-            return CreatedAtAction(nameof(GetById), new { id = studentDto.Id }, studentDto);
+                return CreatedAtAction(nameof(GetById), new { id = studentDto.Id }, studentDto);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // UPDATE STUDENT
         // PUT: https://localhost:portnumber/api/students/{id}
         [HttpPut]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateStudentRequestDto updateStudentRequestDto)
         {
-            // Map DTO to Domain Model
-            var studentDomainModel = mapper.Map<Student>(updateStudentRequestDto);
-
-            // Check if student exists
-            studentDomainModel = await studentRepository.UpdateAsync(id, studentDomainModel);
-            if (studentDomainModel == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
-            }
+                // Map DTO to Domain Model
+                var studentDomainModel = mapper.Map<Student>(updateStudentRequestDto);
 
-            return Ok(mapper.Map<StudentDto>(studentDomainModel));
+                // Check if student exists
+                studentDomainModel = await studentRepository.UpdateAsync(id, studentDomainModel);
+                if (studentDomainModel == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(mapper.Map<StudentDto>(studentDomainModel));
+            }
+            else { return BadRequest(); }
         }
 
         // DELETE STUDENT
         // DELETE: https://localhost:portnumber/api/students/{id}
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var studentDomainModel = await studentRepository.DeleteAsync(id);

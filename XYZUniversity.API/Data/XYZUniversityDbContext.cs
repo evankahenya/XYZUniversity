@@ -12,5 +12,27 @@ namespace XYZUniversity.API.Data
 
         // DbSet for Payments
         public DbSet<Payment> Payments { get; set; }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+
+        //    //seed the data for payments
+
+        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Configuring the one-to-many relationship between Student and Payment
+            modelBuilder.Entity<Payment>()
+                .HasOne<Student>()
+                .WithMany(student => student.Payments)
+                .HasForeignKey(payment => payment.StudentId);
+        }
+
+
+
     }
+    
 }

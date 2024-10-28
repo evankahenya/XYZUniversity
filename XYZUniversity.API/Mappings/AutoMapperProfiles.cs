@@ -12,11 +12,14 @@ namespace XYZUniversity.API.Mappings // Update this namespace based on your proj
             CreateMap<Student, StudentDto>().ReverseMap();
             CreateMap<AddStudentRequestDto, Student>().ReverseMap();
             CreateMap<UpdateStudentRequestDto, Student>().ReverseMap();
+            CreateMap<AddPaymentRequestDto, Payment>().ReverseMap();
+            CreateMap<Payment, PaymentDto>().ReverseMap();
+            CreateMap<UpdatePaymentRequestDto, Payment>().ReverseMap();
 
             // Mapping configurations for Payment
- /*           CreateMap<Payment, PaymentDto>().ReverseMap();
-            CreateMap<AddPaymentRequestDto, Payment>().ReverseMap();
-            CreateMap<UpdatePaymentRequestDto, Payment>().ReverseMap();*/
+            /*           CreateMap<Payment, PaymentDto>().ReverseMap();
+                       CreateMap<AddPaymentRequestDto, Payment>().ReverseMap();
+                       CreateMap<UpdatePaymentRequestDto, Payment>().ReverseMap();*/
         }
     }
 }
