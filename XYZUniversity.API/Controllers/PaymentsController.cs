@@ -22,6 +22,12 @@ namespace XYZUniversity.API.Controllers
         }
         //Create Payment
         //POST:/api/payments
+        /// <summary>
+        /// Adds a single payment record to database. Only accessible in writer role
+        /// </summary>
+        /// <returns>A single payment record</returns>
+        /// <response code="200">Single payment record that has been successfully added to dn</response>
+        /// <response code="401">Your not authourized to make changes using this role</response>
         [HttpPost]
         [Authorize(Roles = "Writer")]
 
@@ -42,6 +48,12 @@ namespace XYZUniversity.API.Controllers
 
         // GET All Payments
         //GET:/api/payments
+        /// <summary>
+        /// Gets all payments made.
+        /// </summary>
+        /// <returns>All payment entries in db</returns>
+        /// <response code="200">Returns all payments</response>
+        /// <response code="404">If no payments are found</response>
         [HttpGet]
         [Authorize(Roles = "Reader,Writer")]
         public async Task<IActionResult> GetAllAsync()
@@ -55,6 +67,12 @@ namespace XYZUniversity.API.Controllers
 
         //Get Payment By Payment ID
         //GET: /api/payments/{id}
+        /// <summary>
+        /// Gets detail of a single  payment by payment ID which is a GUID.
+        /// </summary>
+        /// <returns>A single payment record </returns>
+        /// <response code="200">Returns a single payment record</response>
+        /// <response code="404">If no payment is found with that ID</response>
         [HttpGet]
         [Route("{id:Guid}")]
         [Authorize(Roles = "Reader,Writer")]
@@ -72,6 +90,12 @@ namespace XYZUniversity.API.Controllers
 
         //Update Payments By Id
         //PUT:api/payments/{id}
+        /// <summary>
+        /// edit detail of a single  payment by payment ID which is a GUID. Only accessible in writer role
+        /// </summary>
+        /// <returns>A single payment record </returns>
+        /// <response code="200">Returns a single payment record</response>
+        /// <response code="404">If no payment is found with that ID</response>
         [HttpPut]
         [Route("{id:Guid}")]
         [Authorize(Roles = "Writer")]
@@ -96,6 +120,12 @@ namespace XYZUniversity.API.Controllers
 
         // Delete a Payment by Payment ID
         // DELETE: /api/Payments/{id}
+        /// <summary>
+        /// Delete detail of a single  payment by payment ID which is a GUID. Only accessible in writer role
+        /// </summary>
+        /// <returns>A single payment record </returns>
+        /// <response code="200">Returns a single payment record</response>
+        /// <response code="404">If no payment is found with that ID</response>
 
         [HttpDelete]
         [Route("{id:Guid}")]

@@ -20,6 +20,10 @@ namespace XYZUniversity.API.Controllers
         }
 
         // POST: /api/Auth/Register
+        /// <summary>
+        /// Registers a new user of the service. You can register as a reader or a writer. Writer allows you to read and write to and fro the db
+        /// </summary>
+     
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
@@ -50,6 +54,9 @@ namespace XYZUniversity.API.Controllers
         }
 
         // POST: /api/Auth/Login
+        /// <summary>
+        /// Login with same credentials you used to register.
+        /// </summary>
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)

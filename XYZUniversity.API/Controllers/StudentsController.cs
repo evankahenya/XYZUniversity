@@ -28,6 +28,12 @@ namespace XYZUniversity.Controllers
 
         // GET ALL STUDENTS
         // GET: https://localhost:portnumber/api/students
+        /// <summary>
+        /// Gets all students.
+        /// </summary>
+        /// <returns>A list of students.</returns>
+        /// <response code="200">Returns the list of students</response>
+        /// <response code="404">If no students are found</response>
         [HttpGet]
         [Authorize (Roles = "Reader,Writer")]
         public async Task<IActionResult> GetAll()
@@ -38,6 +44,12 @@ namespace XYZUniversity.Controllers
         }
 
         // GET STUDENT BY ID
+        /// <summary>
+        /// Gets a single student by ID which is a GUID.
+        /// </summary>
+        /// <returns>A single student.</returns>
+        /// <response code="200">Returns the student</response>
+        /// <response code="404">If no students are found</response>
         [HttpGet]
         [Route("{id:Guid}")]
         [Authorize (Roles = "Reader,Writer")]
@@ -54,6 +66,12 @@ namespace XYZUniversity.Controllers
 
         // POST to create new student
         // POST: https://localhost:portnumber/api/students
+        /// <summary>
+        ///  Post Method to create new student. Only accessible with the Writer role
+        /// </summary>
+        /// <returns>The newly enrolled student</returns>
+        /// <response code="200">Student added successfully</response>
+        /// <response code="401">Not authourized to add new students </response>
         [HttpPost]
         [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Create([FromBody] AddStudentRequestDto addStudentRequestDto)
@@ -79,6 +97,12 @@ namespace XYZUniversity.Controllers
 
         // UPDATE STUDENT
         // PUT: https://localhost:portnumber/api/students/{id}
+        /// <summary>
+        ///  PUT Method to edit existing student. Only accessible with the Writer role
+        /// </summary>
+        /// <returns>The newly updated student</returns>
+        /// <response code="200">Student updated successfully</response>
+        /// <response code="401">Not authourized to add new students </response>
         [HttpPut]
         [Route("{id:Guid}")]
         [Authorize(Roles = "Writer")]
@@ -103,6 +127,10 @@ namespace XYZUniversity.Controllers
 
         // DELETE STUDENT
         // DELETE: https://localhost:portnumber/api/students/{id}
+        /// <summary>
+        ///  Post Method to Delete student. Only accessible with the Writer role
+        /// </summary>
+     
         [HttpDelete]
         [Route("{id:Guid}")]
         [Authorize(Roles = "Writer")]
